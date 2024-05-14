@@ -5,14 +5,19 @@ MediaHub is a user-friendly web portal designed for managing images and videos. 
  ### User Registration and Login
 
 **Registration**: Users can create a new account by providing a username, email, and password.
+
 **Login**: Registered users can log in with their credentials.
+
  ### Media Upload
 
 **Image/Video Upload**: Users can upload images and videos in various formats.
+
 **File Validation**: The system ensures that only allowed file types are uploaded.
+
  ### Media Display
 
 **Viewing Media**: Uploaded images and videos can be viewed within the portal.
+
 **Playback Feature**: For videos, a play button allows users to start the video playback directly on the platform.
 
 ## Benefits of MediaHub
