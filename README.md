@@ -26,11 +26,11 @@ MediaHub is a user-friendly web portal designed for managing images and videos. 
 3. **Playback Control**: Enables users to play uploaded videos with a simple click, enhancing the viewing experience.
 
 ## Tech Stack
-Frontend: HTML, CSS, JavaScript
+**Frontend**: HTML, CSS, JavaScript
 
-Backend: Python (Django)
+**Backend**: Python (Django)
 
-Database: SQLite
+**Database**: SQLite
 
 ## Necessary Libraries
 The following libraries need to be installed to run the code:
