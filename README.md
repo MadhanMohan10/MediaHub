@@ -27,7 +27,9 @@ MediaHub is a user-friendly web portal designed for managing images and videos. 
 
 ## Tech Stack
 Frontend: HTML, CSS, JavaScript
+
 Backend: Python (Django)
+
 Database: SQLite
 
 ## Necessary Libraries
