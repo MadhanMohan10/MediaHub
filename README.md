@@ -22,10 +22,8 @@ MediaHub is a user-friendly web portal designed for managing images and videos. 
 
 ## Benefits of MediaHub
 1. **Secure User Authentication**: Ensures secure access to the platform, protecting user data and files.
-2. **User-Friendly Interface**: Provides an intuitive interface for easy navigation and media management.
-3. **Cross-Platform Compatibility**: Supports various image and video formats for upload and playback.
-4. **Easy Media Management**: Allows users to upload, view, and manage their media files conveniently.
-5. **Playback Control**: Enables users to play uploaded videos with a simple click, enhancing the viewing experience.
+2. **Cross-Platform Compatibility**: Supports various image and video formats for upload and playback.
+3. **Playback Control**: Enables users to play uploaded videos with a simple click, enhancing the viewing experience.
 
 ## Tech Stack
 Frontend: HTML, CSS, JavaScript
