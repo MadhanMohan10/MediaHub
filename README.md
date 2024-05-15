@@ -4,7 +4,7 @@ MediaHub is a user-friendly web portal designed for managing images and videos. 
 ## Key Features
  ### User Registration and Login
 
-**Registration**: Users can create a new account by providing a username, email, and password.
+**Registration**: Users can create a new account by providing a username, email, and password along with password's strength.
 
 **Login**: Registered users can log in with their credentials.
 
