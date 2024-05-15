@@ -10,7 +10,7 @@ MediaHub is a user-friendly web portal designed for managing images and videos. 
 
  ### Media Upload
 
-**Image/Video Upload**: Users can upload images and videos in various formats.
+**Image/Video Upload**: Users can upload images and videos in various formats like jpg, jpeg, png & mp4.
 
 **File Validation**: The system ensures that only allowed file types are uploaded.
 
