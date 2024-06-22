@@ -1,6 +1,7 @@
 # MediaHub
 ## Overview
 MediaHub is a user-friendly web portal designed for managing images and videos. Users can register, log in, and upload their media files, which can then be accessed and viewed securely.
+
 ## Key Features
  ### User Registration and Login
 
@@ -19,6 +20,10 @@ MediaHub is a user-friendly web portal designed for managing images and videos. 
 **Viewing Media**: Uploaded images and videos can be viewed within the portal.
 
 **Playback Feature**: For videos, a play button allows users to start the video playback directly on the platform.
+
+### Profile
+1. **View User Profile**: Users can see their Username and Email ID along with an default profile pic.
+2. **Profile Update**: Users can update their Username, Email ID and their profile pic.
 
 ## Benefits of MediaHub
 1. **Secure User Authentication**: Ensures secure access to the platform, protecting user data and files.
@@ -45,4 +50,10 @@ The following libraries need to be installed to run the code:
 ## Demo
 
 https://github.com/MadhanMohan10/MediaHub/assets/134275087/1d3ef2a0-a767-4c23-a890-1343b5e95c0a
+
+
+https://github.com/MadhanMohan10/MediaHub/assets/134275087/4c34f450-1fb5-4059-b0b0-532e0673252b
+
+
+
 
