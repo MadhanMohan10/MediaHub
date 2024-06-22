@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         body,
         html {
@@ -98,15 +99,20 @@
 
         .file-item {
             margin-bottom: 10px;
-            position: relative;
             cursor: pointer;
             display: inline-block;
             justify-content: center;
+            position: relative; /* Ensure the button is positioned relative to this container */
         }
 
         .file-name {
             margin-top: 5px;
             color: #2c3e50;
+        }
+
+        .view-btn {
+            width: 100%; /* Ensure button takes full width of file-item */
+            margin-top: 5px; /* Adjust margin as needed */
         }
 
         .modal-content {
@@ -116,10 +122,12 @@
 
         .modal-body {
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             background-color: transparent;
             padding: 0;
+            position: relative;
         }
 
         .modal-body img,
@@ -127,11 +135,12 @@
             border-radius: 5px;
             max-height: 80vh;
             max-width: 80vw;
+            transition: transform 0.2s; /* Smooth transition for zoom effect */
         }
 
         .btn-container {
             position: absolute;
-            top:50px;
+            top: 50px;
             left: 40%;
             opacity: 0;
             transition: opacity 0.3s ease;
@@ -152,13 +161,52 @@
             margin-top: 10px;
             border-radius: 10px;
         }
+
+        .zoom-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .zoom-controls {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .zoom-controls i {
+            font-size: 24px;
+            margin: 5px;
+            cursor: pointer;
+            color: #fff;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            padding: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .zoom-controls i:hover {
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .profile{
+            color: black;
+        }
+        .profile:hover{
+            color: black;
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
     <div class="container h-100 d-flex align-items-center justify-content-center">
         <div class="user_card">
             <div class="user-section">
-                <h1>Welcome, {{ user.username }}</h1>
+                <h1>Welcome, 
+                <a class="profile" href="{% url 'profile' %}">{{ user.username }}</a>
+                </h1>
                 <form action="{% url 'logout' %}" method="post">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-danger">Logout</button>
@@ -192,11 +240,14 @@
                             {% else %}
                                 <img src="{{ file.file.url }}" alt="Image" class="thumbnail">
                             {% endif %}
-                            <div class="btn-container">
-                                <button class="btn btn-primary view-btn" onclick="openModal('{{ file.file.url }}')">View</button>
+                            <div class="file-info">
+                                <div class="btn-container">
+                                    <button class="btn btn-primary view-btn" onclick="openModal('{{ file.file.url }}')">View</button>
+                                </div>
+                                <p class="file-name">{{ file.file.name }}</p>
                             </div>
-                            <p class="file-name">{{ file.file.name }}</p>
                         </div>
+                        
                     {% endfor %}
                 {% else %}
                     <p class="text-black">No files uploaded yet.</p>
@@ -209,7 +260,13 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-body">
-                    <div id="modalContent"></div>
+                    <div class="zoom-container">
+                        <div id="modalContent"></div>
+                        <div class="zoom-controls" id="zoomControls" style="display:none;">
+                            <i class="fas fa-search-plus" onclick="zoomIn()"></i>
+                            <i class="fas fa-search-minus" onclick="zoomOut()"></i>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -220,20 +277,64 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <script>
+        let zoomLevel = 1;
+        let zoomImage = null;
+        let windowHeight = window.innerHeight;
+        let extraHeight = 0;
+        let imgHeight;
+
         function openModal(url) {
-            var extension = url.split('.').pop().toLowerCase();
+            const extension = url.split('.').pop().toLowerCase();
             if (extension === 'mp4') {
-                var videoTag = '<video controls style="max-height: 80vh; max-width: 80vw;">' +
+                const videoTag = '<video controls style="max-height: 90vh; max-width: 90vw;">' +
                                     '<source src="' + url + '" type="video/mp4">' +
                                     'Your browser does not support the video tag.' +
                                 '</video>';
                 $('#modalContent').html(videoTag);
+                $('#zoomControls').hide();
             } else {
-                var imgTag = '<img src="' + url + '" alt="Media" style="border-radius: 5px; max-height: 80vh; max-width: 80vw;">';
+                const imgTag = '<img src="' + url + '" alt="Media" style="border-radius: 5px; max-height: 90vh; max-width: 100%;" id="zoomImage">';
                 $('#modalContent').html(imgTag);
+                $('#zoomControls').show();
+                zoomImage = document.getElementById('zoomImage');
+                zoomLevel = 1;
+                zoomImage.style.transform = `scale(${zoomLevel})`;
+                imgHeight = zoomImage.naturalHeight;
             }
             $('#mediaModal').modal('show');
+        }
+
+        function zoomIn() {
+            if (zoomLevel < 2.5) {
+                zoomLevel += 0.1;
+                zoomImage.style.transform = `scale(${zoomLevel})`;
+                adjustScroll1();
+            }
+        }
+
+        function zoomOut() {
+            if (zoomLevel > 0.75) {
+                zoomLevel -= 0.1;
+                zoomImage.style.transform = `scale(${zoomLevel})`;
+                adjustScroll2();
+            }
+        }
+
+        function adjustScroll1() {
+            if (zoomImage) {
+                const zoomedHeight = zoomLevel * imgHeight;
+                if (zoomedHeight > windowHeight) {
+                    extraHeight = extraHeight + 14;
+                    zoomImage.style.paddingTop = `${extraHeight}px`;
+                }
+            }
+        }
+
+        function adjustScroll2() {            
+            extraHeight = extraHeight - 14;
+           zoomImage.style.paddingTop = `${extraHeight}px`;              
         }
     </script>
 </body>
 </html>
+

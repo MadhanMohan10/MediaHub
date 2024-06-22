@@ -3,10 +3,37 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from .forms import CreateUserForm
-from .models import MediaFile
+from .forms import CreateUserForm, UserUpdateForm, ProfileUpdateForm
+from django.core.exceptions import ObjectDoesNotExist
+from .models import MediaFile, Profile
 from .decorators import unauthenticated_user, allowed_users
 
+@login_required
+def profile(request):
+    try:
+        profile = request.user.profile
+    except ObjectDoesNotExist:
+        Profile.objects.create(user=request.user)
+        profile = request.user.profile
+        
+    if request.method == 'POST':
+        u_form = UserUpdateForm(request.POST, instance=request.user)
+        p_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
+        print(request.FILES)
+        if u_form.is_valid() and p_form.is_valid():
+            u_form.save()
+            p_form.save()
+            messages.success(request, 'Your account has been updated')
+            return redirect('profile')
+    else:
+        u_form = UserUpdateForm(instance=request.user)
+        p_form = ProfileUpdateForm(instance=request.user.profile)
+
+    context = {
+        'u_form': u_form,
+        'p_form': p_form
+    }
+    return render(request, 'profile.html', context)
 
 @unauthenticated_user
 def login_process(request):
@@ -16,6 +43,11 @@ def login_process(request):
 
         user = authenticate(request, username=username, password=password)
         if user is not None:
+            try:
+                profile = user.profile
+            except ObjectDoesNotExist:
+                Profile.objects.create(user=user)
+
             login(request, user)
             return redirect('home')
         else:
