@@ -42,10 +42,11 @@ The following libraries need to be installed to run the code:
 - Django: Use the command `pip install django`
 
 ## Instructions
-1. Clone this repository to your local machine.
+1. Download the code files from the repo and unzip the folder.
 2. Install the necessary libraries as mentioned above.
-3. Run the Django server using the command `python manage.py runserver`.
-4. Access the web application through your web browser by visiting `http://localhost:8000`.
+3. Make the required mirations using the command `python manage.py makemigrations` after that run the command `python manage.py migrate`.
+4. Run the Django server using the command `python manage.py runserver`.
+5. Access the web application through your web browser by visiting `http://localhost:8000`.
 
 ## Demo
 
